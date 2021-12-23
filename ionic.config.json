@@ -1,0 +1,7 @@
+{
+  "name": "radarPetz",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
