@@ -1,4 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+
 
 @Component({
   selector: 'app-home',
@@ -14,11 +16,12 @@ export class HomePage {
 
 
   map: google.maps.Map;
+  myposition: google.maps.LatLng;
 
   ionViewWillEnter(){
    
     this.loadMap();
-
+    this.getMyPosition();
   
   }
 
@@ -33,6 +36,18 @@ export class HomePage {
 
   }
 
-  constructor() {}
+  getMyPosition(){
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.myposition = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
+      console.log(this.myposition);
+      
+      // resp.coords.latitude
+      // resp.coords.longitude
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+  }
+
+  constructor(private geolocation: Geolocation) {}
 
 }
