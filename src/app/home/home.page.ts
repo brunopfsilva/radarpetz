@@ -21,7 +21,8 @@ export class HomePage {
   ionViewWillEnter(){
    
     this.loadMap();
-    this.getMyPosition();
+    this.getMyCords();
+    
   
   }
 
@@ -33,17 +34,37 @@ export class HomePage {
     });
     console.log("loadMap()");
     
+    this.getMyCords();
+  }
+
+  goPosition(latlng: any){
+    this.map.setCenter(latlng);
+    this.map.setZoom(15);
+
+
+    new google.maps.Marker({
+      position: latlng,
+      map: this.map,
+      title: "Hello World!",
+    });
 
   }
 
-  getMyPosition(){
+  getMyCords(){
+   
     this.geolocation.getCurrentPosition().then((resp) => {
-      this.myposition = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
-      console.log(this.myposition);
-      
-      // resp.coords.latitude
-      // resp.coords.longitude
-     }).catch((error) => {
+   
+    this.myposition = new google.maps.LatLng(resp.coords.latitude,resp.coords.longitude);
+    
+    let lat: any = resp.coords.latitude ;
+    let lng: any = resp.coords.longitude;
+
+     const myLatlng = { lat: lat, lng: lng };
+
+
+    this.goPosition(myLatlng);
+
+    }).catch((error) => {
        console.log('Error getting location', error);
      });
   }
